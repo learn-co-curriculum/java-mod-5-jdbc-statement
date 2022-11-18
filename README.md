@@ -8,21 +8,23 @@
 
 ## Introduction
 
-JDBC includes several classes and interfaces that can be used to execute
-SQL DDL statements (CREATE TABLE, DELETE TABLE, etc.) and SQL DML statements
-(INSERT, UPDATE, DELETE, SELECT, etc.).
+The previous lesson covered how to use the `DriverManager` class
+and `Connection` interface to connect to a PostgreSQL database.
+Now we will see how to use the `Statement` interface to execute an SQL statement:
 
-- **DriverManager** : A class that provides basic services for managing database drivers.
-- **Connection** : A class that represents a connection (session) with a specific database
-  that can execute SQL statements.
-- **Statement** : An interface for executing static SQL statements.
-- **ResultSet** : An interface that encapsulates a data table, often the result of executing  a query.
+- **Statement** : An interface that executes SQL statements through a database connection.
 
-The `Statement` interface is used to execute SQL statements. The interface has three execute methods:
+The `Statement` interface has several methods for executing
+different types of SQL statements:
 
-- `boolean execute (String SQL)` - Use this method to execute SQL CREATE TABLE, DROP TABLE, etc.
-- `int executeUpdate (String SQL)` - Use this method to execute SQL INSERT, UPDATE, and DELETE statements.  The method returns the number of rows affected.
-- `ResultSet executeQuery (String SQL)` - Use this method to execute SELECT statements. The method returns a result set, which encapsulates a data table.
+- `boolean execute (String SQL)` - Execute a DDL statement such as `CREATE TABLE` and `DROP TABLE`.
+- `int executeUpdate (String SQL)` - Execute a DML statement such as `INSERT`, `UPDATE`, and `DELETE`.
+   The method returns the number of rows affected.
+- `ResultSet executeQuery (String SQL)` - Execute a DQL statement such as `SELECT`. 
+   The method returns a result set, which encapsulates a data table.
+
+This lesson will demonstrate the `execute` and `executeUpdate` methods.
+The `executeQuery` method will be demonstrated in a separate lesson.
 
 ## Code along
 
@@ -160,7 +162,7 @@ Query the table in the query tool to confirm the 3 new rows:
 ![insert 3 rows](https://curriculum-content.s3.amazonaws.com/6036/jdbc-statement/insert_rows.png
 )
 
-# Execute an UPDATE statement
+## Execute an UPDATE statement
 
 The steps to execute an SQL UPDATE statement are:
 
