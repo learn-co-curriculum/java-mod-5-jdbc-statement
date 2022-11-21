@@ -10,13 +10,11 @@ public class InsertStatement {
     static final String PASSWORD = "postgres";
 
     public static void main(String[] args) {
-        try {
-            //Establish a connection to the database
-            Connection connection = DriverManager.getConnection(DB_URL, USER, PASSWORD);
-
-            //Create a statement object to execute SQL statements through the database connection
-            Statement statement = connection.createStatement();
-
+        try (   //Establish a connection to the database
+                Connection connection = DriverManager.getConnection(DB_URL, USER, PASSWORD);
+                //Create a statement object to execute SQL statements on the database
+                Statement statement = connection.createStatement();
+        ) {
             //Execute the insert statement to insert a new row.  The executeUpdate method returns number of rows inserted.
             //Escape the single quotes using a backslash.
             int nrow = statement.executeUpdate("INSERT INTO employee (id, email, office, salary) VALUES (1, \'emp1@company.com\', \'b150\', 60000.0)");
@@ -27,11 +25,8 @@ public class InsertStatement {
 
             nrow = statement.executeUpdate("INSERT INTO employee (id, email, office, salary) VALUES (3, \'emp3@company.com\', \'b200\', 150000.0)");
             System.out.println(String.format("%d row inserted", nrow));
-
-            connection.close();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-
     }
 }

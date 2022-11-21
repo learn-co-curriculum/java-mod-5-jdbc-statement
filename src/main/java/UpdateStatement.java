@@ -10,21 +10,16 @@ public class UpdateStatement {
     static final String PASSWORD = "postgres";
 
     public static void main(String[] args) {
-        try {
-            //Establish a connection to the database
-            Connection connection = DriverManager.getConnection(DB_URL, USER, PASSWORD);
-
-            //Create a statement object to execute SQL statements through the database connection
-            Statement statement = connection.createStatement();
-
+        try (   //Establish a connection to the database
+                Connection connection = DriverManager.getConnection(DB_URL, USER, PASSWORD);
+                //Create a statement object to execute SQL statements on the database
+                Statement statement = connection.createStatement();
+        ) {
             //Execute the update statement.  The executeUpdate method returns number of rows updated
             int nrow = statement.executeUpdate("UPDATE employee SET salary = 65000.0 WHERE id = 1");
             System.out.println(String.format("%d row updated", nrow));
-
-            connection.close();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-
     }
 }

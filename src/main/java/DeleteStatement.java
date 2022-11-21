@@ -10,21 +10,16 @@ public class DeleteStatement {
     static final String PASSWORD = "postgres";
 
     public static void main(String[] args) {
-        try {
-            //Establish a connection to the database
-            Connection connection = DriverManager.getConnection(DB_URL, USER, PASSWORD);
-
-            //Create a statement object to execute SQL statements through the database connection
-            Statement statement = connection.createStatement();
-
+        try (   //Establish a connection to the database
+                Connection connection = DriverManager.getConnection(DB_URL, USER, PASSWORD);
+                //Create a statement object to execute SQL statements on the database
+                Statement statement = connection.createStatement();
+        ) {
             //Execute the delete statement.  The method executeUpdate returns number of rows deleted
             int nrow = statement.executeUpdate("DELETE FROM employee WHERE id = 1");
             System.out.println(String.format("%d row deleted", nrow));
-
-            connection.close();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-
     }
 }

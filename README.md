@@ -59,31 +59,27 @@ import java.sql.Statement;
 
 public class CreateTableStatement {
 
-    static final String DB_URL = "jdbc:postgresql://localhost:5432/employee_db";
-    static final String USER = "postgres";
-    static final String PASSWORD = "postgres";
+   static final String DB_URL = "jdbc:postgresql://localhost:5432/employee_db";
+   static final String USER = "postgres";
+   static final String PASSWORD = "postgres";
 
-    public static void main(String[] args) {
-        try {
-            //Establish a connection to the database
-            Connection connection = DriverManager.getConnection(DB_URL, USER, PASSWORD);
+   public static void main(String[] args) {
+      try (   //Establish a connection to the database
+              Connection connection = DriverManager.getConnection(DB_URL, USER, PASSWORD);
+              //Create a statement object to execute SQL statements on the database
+              Statement statement = connection.createStatement();
+      ) {
+         //Drop the employee table if it exists
+         statement.execute("DROP TABLE IF EXISTS employee");
 
-            //Create a statement object to execute SQL statements on the database
-            Statement statement = connection.createStatement();
+         //Create the employee table
+         statement.execute("CREATE TABLE employee (id INTEGER PRIMARY KEY, email TEXT, office TEXT, salary DECIMAL)");
+         System.out.println("Employee table created");
+      } catch (SQLException e) {
+         System.out.println(e.getMessage());
+      }
 
-            //Drop the employee table if it exists
-            statement.execute("DROP TABLE IF EXISTS employee");
-
-            //Create the employee table
-            statement.execute("CREATE TABLE employee (id INTEGER PRIMARY KEY, email TEXT, office TEXT, salary DECIMAL)");
-            System.out.println("Employee table created");
-
-            connection.close();
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-
-    }
+   }
 }
 ```
 
@@ -122,13 +118,11 @@ public class InsertStatement {
    static final String PASSWORD = "postgres";
 
    public static void main(String[] args) {
-      try {
-         //Establish a connection to the database
-         Connection connection = DriverManager.getConnection(DB_URL, USER, PASSWORD);
-
-         //Create a statement object to execute SQL statements through the database connection
-         Statement statement = connection.createStatement();
-
+      try (   //Establish a connection to the database
+              Connection connection = DriverManager.getConnection(DB_URL, USER, PASSWORD);
+              //Create a statement object to execute SQL statements on the database
+              Statement statement = connection.createStatement();
+      ) {
          //Execute the insert statement to insert a new row.  The executeUpdate method returns number of rows inserted.
          //Escape the single quotes using a backslash.
          int nrow = statement.executeUpdate("INSERT INTO employee (id, email, office, salary) VALUES (1, \'emp1@company.com\', \'b150\', 60000.0)");
@@ -139,12 +133,9 @@ public class InsertStatement {
 
          nrow = statement.executeUpdate("INSERT INTO employee (id, email, office, salary) VALUES (3, \'emp3@company.com\', \'b200\', 150000.0)");
          System.out.println(String.format("%d row inserted", nrow));
-
-         connection.close();
       } catch (SQLException e) {
          System.out.println(e.getMessage());
       }
-
    }
 }
 ```
@@ -191,22 +182,17 @@ public class UpdateStatement {
    static final String PASSWORD = "postgres";
 
    public static void main(String[] args) {
-      try {
-         //Establish a connection to the database
-         Connection connection = DriverManager.getConnection(DB_URL, USER, PASSWORD);
-
-         //Create a statement object to execute SQL statements through the database connection
-         Statement statement = connection.createStatement();
-
+      try (   //Establish a connection to the database
+              Connection connection = DriverManager.getConnection(DB_URL, USER, PASSWORD);
+              //Create a statement object to execute SQL statements on the database
+              Statement statement = connection.createStatement();
+      ) {
          //Execute the update statement.  The executeUpdate method returns number of rows updated
          int nrow = statement.executeUpdate("UPDATE employee SET salary = 65000.0 WHERE id = 1");
          System.out.println(String.format("%d row updated", nrow));
-
-         connection.close();
       } catch (SQLException e) {
          System.out.println(e.getMessage());
       }
-
    }
 }
 ```
@@ -251,22 +237,17 @@ public class DeleteStatement {
    static final String PASSWORD = "postgres";
 
    public static void main(String[] args) {
-      try {
-         //Establish a connection to the database
-         Connection connection = DriverManager.getConnection(DB_URL, USER, PASSWORD);
-
-         //Create a statement object to execute SQL statements through the database connection
-         Statement statement = connection.createStatement();
-
+      try (   //Establish a connection to the database
+              Connection connection = DriverManager.getConnection(DB_URL, USER, PASSWORD);
+              //Create a statement object to execute SQL statements on the database
+              Statement statement = connection.createStatement();
+      ) {
          //Execute the delete statement.  The method executeUpdate returns number of rows deleted
          int nrow = statement.executeUpdate("DELETE FROM employee WHERE id = 1");
          System.out.println(String.format("%d row deleted", nrow));
-
-         connection.close();
       } catch (SQLException e) {
          System.out.println(e.getMessage());
       }
-
    }
 }
 ```
