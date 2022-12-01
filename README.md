@@ -90,6 +90,31 @@ The panel should display the empty `employee` table:
 
 ![new employee table](https://curriculum-content.s3.amazonaws.com/6036/jdbc-statement/empty_table.png)
 
+### try-with-resources with multiple resources
+
+Notice the `try-with-resources` statement opened two resources: (1) a `Connection` object, and (2) a `Statement` object:
+
+```java
+try (
+        //Establish a connection to the database
+        Connection connection = DriverManager.getConnection(DB_URL, USER, PASSWORD);
+        //Create a statement object to execute SQL statements on the database
+        Statement statement = connection.createStatement();
+) {
+         //Drop the employee table if it exists
+         statement.execute("DROP TABLE IF EXISTS employee");
+
+         //Create the employee table
+         statement.execute("CREATE TABLE employee (id INTEGER PRIMARY KEY, email TEXT, office TEXT, salary DECIMAL)");
+         System.out.println("Employee table created");
+} catch (SQLException e) {
+         System.out.println(e.getMessage());
+}
+```
+
+The resources will be closed in the opposite order that they were opened.  Thus, the `Statement` object will
+close first, then the `Connection` object.
+
 ## Execute an INSERT statement
 
 The steps to execute an SQL INSERT statement are:
